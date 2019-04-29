@@ -14,7 +14,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Inspiration by the repo : https://github.com/thlorenz/doctoc
+# Inspiration
 
 The folder structure and python script are inspired by the repo : https://github.com/mrlesmithjr/packer-templates and I have modified them to suit my requirement.
 
