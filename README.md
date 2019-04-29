@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Inspiration by the repo : https://github.com/thlorenz/doctoc](#inspiration-by-the-repo--httpsgithubcomthlorenzdoctoc)
+- [Inspiration](#inspiration)
 - [packer-templates](#packer-templates)
   - [Purpose](#purpose)
   - [Information](#information)
