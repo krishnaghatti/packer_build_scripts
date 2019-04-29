@@ -1,0 +1,6 @@
+- name: Harden Server
+  hosts: localhost
+  become: yes
+
+  roles:
+    - Ubuntu1604-CIS

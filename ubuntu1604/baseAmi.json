@@ -1,0 +1,64 @@
+{
+    "variables": {
+        "vpc_region": "eu-west-1",
+        "vpc_id": "vpc-58480c3d",
+        "vpc_public_sn_id": "subnet-7801281d",
+        "vpc_public_sg_id": "sg-09503940fc30b6d4c",
+        "source_ami": "ami-03d57c34293448f40",
+        "instance_type": "t2.small",
+        "ssh_username": "ubuntu",
+        "ami_name": "ubuntu-1604-50g-minimal-{{isotime \"02-Jan-06-1504\"}}"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "access_key": "",
+            "secret_key": "",
+            "region": "{{ user `vpc_region` }}",
+            "vpc_id": "{{ user `vpc_id` }}",
+            "subnet_id": "{{user `vpc_public_sn_id` }}",
+            "associate_public_ip_address": true,
+            "security_group_id": "{{ user `vpc_public_sg_id` }}",
+            "source_ami": "{{ user `source_ami` }}",
+            "instance_type": "{{ user `instance_type` }}",
+            "ssh_username": "{{ user `ssh_username` }}",
+            "ami_name": "{{ user `ami_name` }}",
+            "ami_regions": [
+                "us-east-1",
+                "eu-west-1",
+                "ap-south-1"
+            ],
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_type": "gp2",
+                    "volume_size": "50",
+                    "delete_on_termination": true
+                }
+            ],
+            "tags": {
+                "OS_Version": "Ubuntu 16.04",
+                "Base_AMI_Name": "{{ .SourceAMIName }}",
+                "Name": "{{ user `ami_name`}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "./cis_hardening",
+            "destination": "/tmp/"
+        },
+        {
+            "type": "shell",
+            "script": "baseInit.sh"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "manifest",
+            "output": "manifest.json",
+            "strip_path": true
+        }
+    ]
+}
