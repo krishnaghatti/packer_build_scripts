@@ -13,7 +13,6 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
 ## packer-templates
 The images to be built and all the related files should be in each of its folder. The build file's name should be `baseAmi.json`
 
