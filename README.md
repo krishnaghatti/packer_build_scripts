@@ -4,7 +4,6 @@
 
 - [packer-templates](#packer-templates)
 - [Purpose](#purpose)
-- [Information](#information)
 - [Requirements](#requirements)
   - [Software](#software)
 - [Usage](#usage)
@@ -16,20 +15,26 @@
 
 
 ## packer-templates
+The images to be built and all the related files should be in each of its folder. The build file's name should be `baseAmi.json`
 
 ## Purpose
-
+The `build_script.py` script builds from either the given folder or builds all of the images from the folders. As of now the templates only build AWS specific AMIs.
 This repository can be used for building various cloud images using [Packer](https://www.packer.io).
-
-## Information
 
 ## Requirements
 
 ### Software
 
 - [Packer](https://www.packer.io)
+- python 3.7 or above (the script uses fstrings)
 
 ## Usage
+To build specific AMI:
+```python3 build_script.py build_specific --ami_to_build ubuntu1604```
+To build all:
+```python3 build_script.py build_all```
+To get the current available AMIs:
+```python3 build_script.py get_all_ami_ids```
 
 ## License
 
