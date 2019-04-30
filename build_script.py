@@ -10,6 +10,7 @@ WORK_DIR = "/home/gsri/workspace/packer_scripts"
 
 
 def list_without_hidden(WORK_DIR):
+    """List dirs in a given folder with out the hidden folders"""
     list_without_hidden = []
     for each in [name for name in os.listdir(WORK_DIR) if os.path.isdir(os.path.join(WORK_DIR, name))]:
         if not each.startswith('.'):
@@ -18,6 +19,7 @@ def list_without_hidden(WORK_DIR):
 
 
 def get_ami_id(item):
+    """Gives the AMI IDs from specific manifest file"""
     json_file = os.path.join(WORK_DIR, item, 'manifest.json')
     if os.path.isfile(json_file):
         try:
@@ -33,6 +35,7 @@ def get_ami_id(item):
 
 
 def get_all_ami_ids():
+    """Gives the AMI IDs from all the manifest files"""
     path_list = list_without_hidden(WORK_DIR)
     for each in path_list:
         get_ami_id(each)
@@ -41,7 +44,6 @@ def get_all_ami_ids():
 def main():
     """Main program execution."""
     args = parse_args()
-    # action = args.action
     decide_action(args)
 
 
@@ -71,6 +73,7 @@ def decide_action(args):
 
 
 def build_specific(ami_to_build):
+    """Builds the image from the specific folder given"""
     args = parse_args()
     ami_to_build = args.ami_to_build
     logging.info(f'building AMI for {ami_to_build}')
@@ -90,6 +93,7 @@ def build_all():
 
 
 def packer_build():
+    """Builds the image with packer"""
     process = subprocess.Popen(['packer', 'build', 'baseAmi.json'])
     logging.info('AMIs are being prepared...Please wait and do not stop this program')
     logging.info('The output of the packer command is below...It will take a while to complete. be patient!')
@@ -99,6 +103,7 @@ def packer_build():
 
 
 def validte_dir(directory):
+    """Checks if a given dir exists"""
     # os.chdir(WORK_DIR)
     if os.path.isdir(directory):
         return True
@@ -107,6 +112,7 @@ def validte_dir(directory):
 
 
 def validate_json(directory):
+    """Checks if the baseAmi.json exists"""
     if os.path.isfile(os.path.join(directory, 'baseAmi.json')):
         return True
     else:
@@ -114,6 +120,7 @@ def validate_json(directory):
 
 
 def validate_ami_to_build(ami_to_build):
+    """Validates the input argument - ami_to_build"""
     if not ami_to_build:
         raise argparse.ArgumentTypeError(f'{ami_to_build} can not be empty')
     return ami_to_build
