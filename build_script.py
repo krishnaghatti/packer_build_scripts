@@ -1,9 +1,17 @@
+"""script that builds cloud images with customisation with packer"""
 import argparse
 import json
 import logging
 import os
 import subprocess
 import sys
+import shutil
+# import stackprinter
+
+import sentry_sdk
+sentry_sdk.init("https://c026e5599baf40b7bb721f3e32c3b015@sentry.io/1451024")
+
+# stackprinter.set_excepthook(style='color')
 
 logging.basicConfig(level=logging.INFO)
 WORK_DIR = "/home/gsri/workspace/packer_scripts"
@@ -27,10 +35,12 @@ def get_ami_id(item):
                 data = json.load(stream)
                 ami_id = (data['builds'][-1]['artifact_id'])
                 # print(json.dumps(data, indent=4))
-                print(f'ami_id for {item} is {ami_id}')
+                logging.info(f'ami_id for {item} is {ami_id}')
         except ValueError:
-            logging.info('invalid json: %s' % e)
+            # stackprinter.show()
+            logging.info('invalid json')
     else:
+        # stackprinter.show()
         logging.info('manifest file not present')
 
 
@@ -41,10 +51,25 @@ def get_all_ami_ids():
         get_ami_id(each)
 
 
+def pre_checks():
+    """Checks all pre required elements"""
+    if not which('packer'):
+        logging.info('Packer utility is not installed or is not available in the path')
+        return False
+    return True
+
+
+def which(program):
+    """checks if a OS command is present in the PATH"""
+    return shutil.which(program) is not None
+
+
 def main():
     """Main program execution."""
     args = parse_args()
-    decide_action(args)
+    if pre_checks():
+        decide_action(args)
+    logging.info('Pre checks failed. Please check!')
 
 
 def parse_args():
@@ -105,18 +130,12 @@ def packer_build():
 def validte_dir(directory):
     """Checks if a given dir exists"""
     # os.chdir(WORK_DIR)
-    if os.path.isdir(directory):
-        return True
-    else:
-        return False
+    return bool(os.path.isdir(directory))
 
 
 def validate_json(directory):
     """Checks if the baseAmi.json exists"""
-    if os.path.isfile(os.path.join(directory, 'baseAmi.json')):
-        return True
-    else:
-        return False
+    return bool(os.path.isfile(os.path.join(directory, 'baseAmi.json')))
 
 
 def validate_ami_to_build(ami_to_build):
