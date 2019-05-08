@@ -113,8 +113,9 @@ def build_all():
     logging.info('Building all images.')
     os.chdir(WORK_DIR)
     for each in list_without_hidden(WORK_DIR):
-        build_specific(each)
-        os.chdir(WORK_DIR)
+        if validte_dir(each) and validate_json(each):
+            os.chdir(each)
+            packer_build()
 
 
 def packer_build():
