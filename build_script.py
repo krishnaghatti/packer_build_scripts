@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 import shutil
-# import stackprinter
+import stackprinter
 
 import sentry_sdk
 sentry_sdk.init("https://c026e5599baf40b7bb721f3e32c3b015@sentry.io/1451024")
