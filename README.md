@@ -30,8 +30,10 @@ This repository can be used for building various cloud images using [Packer](htt
 ## Usage
 To build specific AMI:
 ```python3 build_script.py build_specific --ami_to_build ubuntu1604```
+
 To build all:
 ```python3 build_script.py build_all```
+
 To get the current available AMIs:
 ```python3 build_script.py get_all_ami_ids```
 
